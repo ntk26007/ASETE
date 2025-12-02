@@ -1,0 +1,368 @@
+/* ------------------ Reset General ------------------ */
+/* Eliminamos márgenes y padding por defecto de todos los elementos y usamos box-sizing border-box */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ------------------ Body ------------------ */
+/* Configuración general del cuerpo de la página */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente moderna y legible */
+    background: linear-gradient(135deg, #8a63d2, #9b6ae2); /* Degradado de fondo */
+    color: #fff; /* Color de texto claro para contraste */
+    min-height: 100vh; /* Asegura que el body ocupe al menos toda la altura de la ventana */
+    overflow-x: hidden; /* Evita el scroll horizontal */
+}
+
+/* ------------------ Fondo de partículas ------------------ */
+/* Canvas fijo para animaciones de partículas */
+canvas#particles {
+    position: fixed; /*Fijo en la pantalla*/
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Detras del contenido */
+    display: block;
+    pointer-events: none; /*No interfiere con otros elementos*/
+}
+
+/* ------------------ Título general ------------------ */
+h1 {
+    text-align: center; /* Centrado */
+    color: #FFE066;
+    letter-spacing: 2px; /* Espaciado entre letras */
+    font-family: 'Georgia', serif;
+    font-size: 4em;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.4); /* Sombra para resaltar */
+    animation: glow 2s ease-in-out infinite alternate; /* Efecto de brillo */
+    margin-top: 30px;
+}
+
+/* ------------------ Efecto de brillo ------------------ */
+/* Animación que genera un efecto de glow/brillo en los títulos */
+@keyframes glow {
+    0% { text-shadow: 0 0 5px #FFE066, 0 0 10px #FFE06670, 0 0 20px #FFE06650; }
+    50% { text-shadow: 0 0 15px #FFF176, 0 0 25px #FFF17690, 0 0 35px #FFF17660; }
+    100% { text-shadow: 0 0 5px #FFE066, 0 0 10px #FFE06670, 0 0 20px #FFE06650; }
+}
+
+/* ------------------ Contenedor principal ------------------ */
+/* Contenedor flexible para formularios o secciones */
+.container {
+    display: flex;
+    align-items: center; /* Centrado vertical */
+    justify-content: center; /* Centrado horizontal */
+    flex-direction: column; /* Elementos en columna */
+    gap: 15px; /* Espacio entre elementos */
+    margin: 40px auto;
+    background: rgba(255, 255, 255, 0.1); /* Fondo semitransparente */
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    backdrop-filter: blur(6px); /* Efecto de desenfoque */
+    padding: 25px 40px;
+}
+
+/* ------------------ Contenedor general ------------------ */
+/* Caja con fondo translúcido y efecto blur */
+.container {
+    width: 80%;
+    max-width: 900px;
+    margin: 40px auto; /* Centrado horizontal */
+    background: rgba(255, 255, 255, 0.15); /* Fondo translúcido */
+    padding: 40px;
+    border-radius: 20px; /* Bordes redondeados */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px); /* Efecto de desenfoque */
+    animation: fadeInUp 0.8s ease forwards; /* Animación de entrada */
+}
+
+/* ------------------ Formularios ------------------ */
+form {
+    display: flex;
+    flex-direction: column; /*Vertical*/
+    gap: 25px;
+    margin-top: 20px;
+}
+
+/* Etiquetas de formulario */
+label {
+    font-size: 20px;
+    font-weight: bold;
+    color: #FFE066;
+    opacity: 0; /* Inicialmente invisibles */
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s forwards; /* Animacion de entrada */
+}
+
+/* Inputs y Select y textarea*/
+input[type="text"],
+input[type="number"],
+input[type="password"],
+select,
+textarea {
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    background-color: #fff;
+    color: #333;
+    transition: all 0.3s ease; /* Transición suave */
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+/* Efecto al enfocar */
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    box-shadow: 0 0 10px #FFE066;
+    transform: scale(1.02);
+}
+
+/* ------------------ Checkbox ------------------ */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    accent-color: #FFE066; /* Color personalizado para el checkbox */
+    cursor: pointer;
+}
+
+/* ------------------ Select ------------------ */
+select:hover {
+    box-shadow: 0 0 10px rgba(255, 230, 100, 0.5);
+}
+
+/* ------------------ Botones Generales ------------------ */
+.boton,
+input[type="submit"],
+.login-box button {
+    background-color: #FFE066;
+    color: #4B0082;
+    font-weight: bold;
+    border: 1px solid #4B0082;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+}
+
+.boton:hover,
+input[type="submit"]:hover,
+.login-box button:hover {
+    background-color: #FFD54F;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #FFE066, 0 0 25px #FFD54F80;
+}
+
+
+/* ------------------ Botón nueva y cerrar------------------ */
+.nueva-cerrar-box {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    gap: 10px; /* Espacio entre botones */
+    flex-wrap: wrap; /* Permite que bajen si no caben */
+}
+
+.nueva-box  {
+    background-color: #FFE066;
+    color: #4B0082;
+    font-weight: bold;
+    border: 1px solid #4B0082;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+}
+
+.nueva-box button:hover {
+    background-color: #FFD54F;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #FFE066, 0 0 20px #FFD54F80;
+}
+
+/* ------------------ Botón Filtrar (en formularios) ------------------ */
+input[type="submit"].boton {
+    width: 100%;
+}
+
+/* ------------------ Botón Flecha ------------------ */
+.boton-flecha {
+    background-color: #FFE066;
+    color: #4B0082;
+    border: none;
+    border-radius: 12px;
+    width: 65px;
+    height: 65px;
+    font-size: 36px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    line-height: 65px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.boton-flecha::before {
+    content: '⬅'; /*icono de flecha izquierda*/
+}
+
+.boton-flecha:hover {
+    background-color: #FFD54F;
+    transform: scale(1.1) rotate(-5deg);
+    box-shadow: 0 0 20px #FFE066;
+}
+
+/* ------------------ Tabla ------------------ */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Elimina espacios entre celdas */
+    margin-top: 30px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th, td {
+    text-align: left;
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+th {
+    background-color: rgba(0,0,0,0.4);
+    color: #FFE066;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+tr {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s forwards;
+}
+
+tr:hover {
+    background-color: rgba(255, 230, 100, 0.2);
+    box-shadow: 0 0 20px rgba(255, 230, 100, 0.5);
+    color: #FFF8DC;
+}
+
+/* ------------------ Texto de resultados ------------------ */
+.resultados {
+    margin-top: 25px;
+    font-size: 20px;
+    text-align: center;
+    color: #FFE066;
+}
+
+/* ------------------ Login ------------------ */
+.login-box {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 400px;
+    max-width: 90%;
+    margin-top: 40px;
+    padding: 35px;
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    text-align: center;
+    backdrop-filter: blur(10px);
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.login-box h1 {
+    font-size: 2.4em;
+    margin-bottom: 25px;
+    color: #FFE066;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+    background-color: #fafafa;
+    color: #333;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* ------------------ Imagen del login ------------------ */
+.login-box img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* ------------------ Animaciones ------------------ */
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ------------------ Responsive ------------------ */
+@media (max-width: 768px) {
+    h1 { 
+        font-size: 3em; 
+    }
+    .container { 
+        width: 90%;
+        padding: 25px; 
+        flex-direction: column;
+        align-items: stretch;
+    }
+    input, select, button, th, td, label { 
+        font-size: 16px; 
+    }
+    .boton-flecha {
+        width: auto;
+        height: auto;
+        font-size: 18px;
+    }
+    .login-box {
+        width: 90%;
+        padding: 25px;
+        margin-top: 30px;
+    }
+    .boton {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/*------------------ Contenedor de idiomas ------------------ */
+.idiomas {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 18px;
+}
+.idiomas a {
+    color: #FFE066;
+    text-decoration: none;
+    margin: 0 8px;
+    transition: color 0.3s ease;
+}
+.idiomas a:hover {
+    color: #FFF176;
+}
+
