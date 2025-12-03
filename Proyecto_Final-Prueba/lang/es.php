@@ -20,11 +20,8 @@ $lang_data = [
     'contrasena' => 'Contraseña',
     'login_boton' => 'Entrar',
     'iniciar_sesion' => 'Iniciar Sesión',
-    'usuario' => 'Usuario',
-    'contraseña' => 'Contraseña',
     'recordarme' => 'Recuérdame',
     'olvidaste' => '¿Olvidaste tu contraseña?',
-    'bienvenido' => 'Bienvenido',
     'drama' => 'Drama',
     'ciencia' => 'Ciencia ficción',
     'biografia' => 'Biografía',
@@ -43,5 +40,20 @@ $lang_data = [
     'registrarse' => 'Registrarse',
     'confirmar_contraseña' => 'Confirmar Contraseña',
     'registrarse_boton' => 'Registrar',
-    'volver_login' => 'Volver al Login'
+    'volver_login' => 'Volver al Login',
+    'error_registro' => '❌ Error en el registro. Por favor, inténtalo de nuevo.',
+    'exito_registro' => '✅ ¡Registro exitoso! Ahora puedes iniciar sesión.',
+    'usuario_existe' => '❌ El usuario ya existe. Por favor, elige otro.',
+    'peliculas' => 'Películas',
+    'libros' => 'Libros',
+    'disponible' => 'Disponible',
+    'reservado' => 'Reservado',
+    'reservar' => 'Reservar',
+    'devolver' => 'Devolver',
+    
+    // --- Mensajes de reservar y devolver ---
+    'mensaje_reservar_pelicula' => "📕 Película reservada correctamente.",
+    'mensaje_reservar_libro'    => "📕 Libro reservado correctamente.",
+    'mensaje_devolver_pelicula' => "🔄 Película devuelta correctamente.",
+    'mensaje_devolver_libro'    => "🔄 Libro devuelto correctamente.",
 ];

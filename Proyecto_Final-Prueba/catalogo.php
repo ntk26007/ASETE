@@ -6,7 +6,7 @@ include 'idioma.php';
 include 'Utils.php';
 include 'conexion.php';
 
-// Protege la página
+// Proteger página
 if (!isset($_SESSION['usuario'])) {
     header('Location: login.php');
     exit();
@@ -17,16 +17,47 @@ if (!isset($_SESSION['visitas'])) $_SESSION['visitas'] = 0;
 $visitas = &$_SESSION['visitas'];
 Utils::incrementarVisitas($visitas);
 
-// --- Cambiar estado si se recibe POST ---
+// --- Inicializar DB ---
 $db = new DB($conexion);
-if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reservar'])) {
+
+// ===============================
+//  RESERVAR o DEVOLVER
+// ===============================
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $tabla = $_POST['tabla'];
     $id = (int)$_POST['id'];
-    $db->cambiarEstado($tabla, $id, 'Reservado');
-    $_SESSION['flash'][] = ['type' => 'success', 'text' => "✅ {$tabla} reservado correctamente."];
+
+    if (isset($_POST['reservar'])) {
+        $db->cambiarEstado($tabla, $id, 'Reservado');
+
+        $mensaje = ($tabla === 'Peliculas') ? 
+            ($lang_data['mensaje_reservar_pelicula'] ?? "📕 Película reservada correctamente.") : 
+            ($lang_data['mensaje_reservar_libro'] ?? "📕 Libro reservado correctamente.");
+
+        $_SESSION['flash'][] = [
+            'type' => 'success',
+            'text' => $mensaje
+        ];
+    }
+
+    if (isset($_POST['devolver'])) {
+        $db->cambiarEstado($tabla, $id, 'Disponible');
+
+        $mensaje = ($tabla === 'Peliculas') ? 
+            ($lang_data['mensaje_devolver_pelicula'] ?? "🔄 Película devuelta correctamente.") : 
+            ($lang_data['mensaje_devolver_libro'] ?? "🔄 Libro devuelto correctamente.");
+
+        $_SESSION['flash'][] = [
+            'type' => 'info',
+            'text' => $mensaje
+        ];
+    }
+
     header("Location: catalogo.php");
     exit();
 }
+
 
 // --- Filtros desde index.php ---
 $filtros = [
@@ -38,7 +69,7 @@ $filtros = [
     'editorial' => $_GET['editorial'] ?? ''
 ];
 
-// --- Obtener resultados ---
+// --- Datos ---
 $peliculas = $db->getPeliculas($filtros);
 $libros = $db->getLibros($filtros);
 
@@ -55,11 +86,24 @@ if (isset($_SESSION['flash'])) {
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Catálogo</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Catálogo</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+.catalogo-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+.catalogo-col {
+    flex: 1;
+}
+</style>
+
 </head>
 <body>
+
 <h1><?= $lang_data['titulo_catalogo'] ?></h1>
 
 <div class="idiomas">
@@ -70,51 +114,77 @@ if (isset($_SESSION['flash'])) {
 
 <div class="container">
     <button class="boton-flecha" onclick="window.location.href='index.php'"></button>
-    <button class="nueva-box" onclick="window.location.href='nueva_pelicula.php'"><?=$lang_data["nueva_pelicula"]?></button>
-    <button class="nueva-box" onclick="window.location.href='logout.php'"><?=$lang_data["cerrar_sesion"]?></button>
+    <button class="nueva-box" onclick="window.location.href='nueva_pelicula.php'"><?= $lang_data["nueva_pelicula"] ?></button>
+    <button class="nueva-box" onclick="window.location.href='logout.php'"><?= $lang_data["cerrar_sesion"] ?></button>
 </div>
 
 <div class="resultados">
     <?= $mensaje ?>
 
-    <h2>🎬 <?= $lang_data['peliculas'] ?? 'Películas' ?></h2>
-    <?php if(count($peliculas) > 0): ?>
-        <?php foreach($peliculas as $p): ?>
-            <?= $p->aHTML($lang_data) ?>
-            <?php if($p->estado === 'Disponible'): ?>
-                <form method="POST" style="margin-bottom:20px;">
-                    <input type="hidden" name="tabla" value="Peliculas">
-                    <input type="hidden" name="id" value="<?= $p->id ?>">
-                    <button type="submit" name="reservar">Reservar</button>
-                </form>
-            <?php else: ?>
-                <p>❌ Reservado</p>
-            <?php endif; ?>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>❌ No hay películas que cumplan los filtros.</p>
-    <?php endif; ?>
+    <div class="catalogo-container">
 
-    <h2>📚 <?= $lang_data['libros'] ?? 'Libros' ?></h2>
-    <?php if(count($libros) > 0): ?>
-        <?php foreach($libros as $l): ?>
-            <?= $l->aHTML($lang_data) ?>
-            <?php if($l->estado === 'Disponible'): ?>
-                <form method="POST" style="margin-bottom:20px;">
-                    <input type="hidden" name="tabla" value="Libros">
-                    <input type="hidden" name="id" value="<?= $l->id ?>">
-                    <button type="submit" name="reservar">Reservar</button>
-                </form>
-            <?php else: ?>
-                <p>❌ Reservado</p>
-            <?php endif; ?>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>❌ No hay libros que cumplan los filtros.</p>
-    <?php endif; ?>
+    <!-- ===================== -->
+    <!--       PELÍCULAS       -->
+    <!-- ===================== -->
+    <div class="catalogo-col">
+        <h2>🎬 <?= $lang_data['peliculas'] ?></h2>
 
-    <p>✅ Has visitado el catálogo <strong><?= $_SESSION['visitas'] ?></strong> veces.</p>
+        <?php if (count($peliculas) > 0): ?>
+            <?php foreach ($peliculas as $p): ?>
+                <?= $p->aHTML($lang_data) ?>
+
+                <!-- BOTONES DE RESERVAR / DEVOLVER -->
+                <?php if ($p->estado === 'Disponible'): ?>
+                    <form method="POST">
+                        <input type="hidden" name="tabla" value="Peliculas">
+                        <input type="hidden" name="id" value="<?= $p->id ?>">
+                        <input type="submit" name="reservar" class="boton boton-reservar" value="<?= $lang_data['reservar'] ?>">
+                    </form>
+                <?php else: ?>
+                    <form method="POST">
+                        <input type="hidden" name="tabla" value="Peliculas">
+                        <input type="hidden" name="id" value="<?= $p->id ?>">
+                        <input type="submit" name="devolver" class="boton boton-devolver" value="<?= $lang_data['devolver'] ?>">
+                    </form>
+                <?php endif; ?>
+
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>❌ <?= $lang_data['no_hay_peliculas'] ?? 'No hay películas.' ?></p>
+        <?php endif; ?>
+    </div>
+
+    <!-- ===================== -->
+    <!--         LIBROS        -->
+    <!-- ===================== -->
+    <div class="catalogo-col">
+        <h2>📚 <?= $lang_data['libros'] ?></h2>
+
+        <?php if (count($libros) > 0): ?>
+            <?php foreach ($libros as $l): ?>
+                <?= $l->aHTML($lang_data) ?>
+
+                <!-- BOTONES DE RESERVAR / DEVOLVER -->
+                <?php if ($l->estado === 'Disponible'): ?>
+                    <form method="POST">
+                        <input type="hidden" name="tabla" value="Libros">
+                        <input type="hidden" name="id" value="<?= $l->id ?>">
+                        <input type="submit" name="reservar" class="boton boton-reservar" value="<?= $lang_data['reservar'] ?>">
+                    </form>
+                <?php else: ?>
+                    <form method="POST">
+                        <input type="hidden" name="tabla" value="Libros">
+                        <input type="hidden" name="id" value="<?= $l->id ?>">
+                        <input type="submit" name="devolver" class="boton boton-devolver" value="<?= $lang_data['devolver'] ?>">
+                    </form>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>❌ <?= $lang_data['no_hay_libros'] ?? 'No hay libros.' ?></p>
+        <?php endif; ?>
+    </div>
 </div>
-
+    <p>📊 Has visitado el catálogo <strong><?= $_SESSION['visitas'] ?></strong> veces.</p>
+</div>
 </body>
 </html>

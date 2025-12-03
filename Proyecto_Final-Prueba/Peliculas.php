@@ -1,5 +1,5 @@
 <?php
-require_once 'Formatear.php';
+require_once "Formatear.php";
 
 class Pelicula {
     use Formatear;
@@ -9,22 +9,15 @@ class Pelicula {
     public string $director;
     public string $actores;
     public string $genero;
-    public string $estado;
+    public string $estado = "Disponible";  // ← Añadido
     public int $id;
 
-    public function __construct($titulo, $año, $director, $actores, $genero, $estado = 'Disponible') {
+    public function __construct($titulo, $año, $director, $actores, $genero) {
         $this->titulo = $titulo;
         $this->año = $año;
         $this->director = $director;
         $this->actores = $actores;
         $this->genero = $genero;
-        $this->estado = $estado;
-    }
-
-    public function getEstado() { return $this->estado; }
-
-    public function mostrarPelicula() {
-        return "🎬 Película: {$this->titulo} ({$this->año}) - {$this->estado}";
     }
 }
 
@@ -38,10 +31,10 @@ class Libro {
     public int $paginas;
     public string $año;
     public int $precio;
-    public string $estado;
+    public string $estado = "Disponible"; // ← Añadido
     public int $id;
 
-    public function __construct($titulo, $autor_id, $genero, $editorial, $paginas, $año, $precio, $estado = 'Disponible') {
+    public function __construct($titulo, $autor_id, $genero, $editorial, $paginas, $año, $precio) {
         $this->titulo = $titulo;
         $this->autor_id = $autor_id;
         $this->genero = $genero;
@@ -49,13 +42,6 @@ class Libro {
         $this->paginas = $paginas;
         $this->año = $año;
         $this->precio = $precio;
-        $this->estado = $estado;
-    }
-
-    public function getEstado() { return $this->estado; }
-
-    public function mostrarLibro() {
-        return "📚 Libro: {$this->titulo} ({$this->año}) - {$this->estado}";
     }
 }
 ?>

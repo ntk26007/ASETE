@@ -1,5 +1,5 @@
 <?php
-// Definición de cadenas en ingles
+// Definición de cadenas en inglés
 $lang_data = [
     'titulo_catalogo' => '🎬 Movie Catalog',
     'nueva_pelicula' => 'New Movie',
@@ -20,11 +20,8 @@ $lang_data = [
     'contrasena' => 'Password',
     'login_boton' => 'Login',
     'iniciar_sesion' => 'Sign In',
-    'usuario' => 'Username',
-    'contraseña' => 'Password',
     'recordarme' => 'Remember Me',
     'olvidaste' => 'Forgot your password?',
-    'bienvenido' => 'Welcome',
     'drama' => 'Drama',
     'ciencia' => 'Science Fiction',
     'biografia' => 'Biography',
@@ -37,9 +34,24 @@ $lang_data = [
     'año_pelicula' => 'Year',
     'director_pelicula' => 'Director',
     'actor_pelicula' => 'Main Actor',
-    'guardar_pelicula' => 'Save Movie', 
+    'guardar_pelicula' => 'Save Movie',
     'registrarse' => 'Register',
     'confirmar_contraseña' => 'Confirm Password',
-    'registrar_boton' => 'Register'
-    'volver_login' => 'Back to Login'
+    'registrar_boton' => 'Register',
+    'volver_login' => 'Back to Login',
+    'error_registro' => '❌ Registration error. Please try again.',
+    'exito_registro' => '✅ Registration successful! You can now log in.',
+    'usuario_existe' => '❌ Username already exists. Please choose another.',
+    'peliculas' => 'Movies',
+    'libros' => 'Books',
+    'disponible' => 'Available',
+    'reservado' => 'Reserved',
+    'reservar' => 'Reserve',
+    'devolver' => 'Return',
+    
+    // --- Mensajes de reservar y devolver ---
+    'mensaje_reservar_pelicula' => "📕 Movie reserved successfully.",
+    'mensaje_reservar_libro'    => "📕 Book reserved successfully.",
+    'mensaje_devolver_pelicula' => "🔄 Movie returned successfully.",
+    'mensaje_devolver_libro'    => "🔄 Book returned successfully.",
 ];

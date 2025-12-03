@@ -193,6 +193,51 @@ input[type="submit"]:hover,
     box-shadow: 0 0 10px #FFE066, 0 0 20px #FFD54F80;
 }
 
+/* ------------------ Botones de Reservar / Devolver ------------------ */
+.boton-reservar {
+    background-color: #28a745; /* Verde */
+    color: #fff;
+    font-weight: bold;
+    border: 1px solid #1e7e34;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+    width: auto;
+    margin-top: 10px;
+}
+
+.boton-reservar:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #28a745, 0 0 20px #28a74580;
+}
+
+.boton-devolver {
+    background-color: #dc3545; /* Rojo */
+    color: #fff;
+    font-weight: bold;
+    border: 1px solid #bd2130;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+    width: auto;
+    margin-top: 10px;
+}
+
+.boton-devolver:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #dc3545, 0 0 20px #dc354580;
+}
+
 /* ------------------ Botón Filtrar (en formularios) ------------------ */
 input[type="submit"].boton {
     width: 100%;
@@ -365,4 +410,5 @@ tr:hover {
 .idiomas a:hover {
     color: #FFF176;
 }
+
 
