@@ -1,10 +1,10 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) session_start();
 include 'idioma.php';
-include 'Formatear.php';
-include 'Peliculas.php';
-
-
+include 'Formatear.php'; // asegúrate del nombre en minúsculas
+include 'Peliculas.php'; // idem
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">

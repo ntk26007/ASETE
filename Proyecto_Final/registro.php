@@ -41,7 +41,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 </head>
 <body>
 <div class="login-box">
-    <h2>Registro</h2>
+    <h2><?= $lang_data['Registro'] ?></h2>
 
     <?php if($mensaje): ?>
         <p class="error"><?= $mensaje ?></p>
@@ -50,9 +50,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <form method="POST">
         <input type="text" name="usuario" placeholder="<?= $lang_data['usuario'] ?>" required>
         <input type="password" name="password" placeholder="<?= $lang_data['contraseña'] ?>" required>
-        <input type="password" name="confirm_password" placeholder="Confirmar contraseña" required>
-        <button type="submit">Registrar</button>
-        <button type="button" onclick="window.location.href='login.php'">Volver al login</button>
+        <input type="password" name="confirm_password" placeholder="<?= $lang_data['Confirmar Contraseña'] ?>" required>
+        <button type="submit"><?= $lang_data['Registrar'] ?></button>
+        <button type="button" onclick="window.location.href='login.php'"><?= $lang_data['volver_login'] ?></button>
+
+         <!-- Enlaces para cambiar idioma -->
+            <div class="idiomas">
+                🌐 
+                <a href="idioma.php?lang=es">Español</a> | 
+                <a href="idioma.php?lang=en">English</a>
+            </div>
     </form>
 </div>
 </body>

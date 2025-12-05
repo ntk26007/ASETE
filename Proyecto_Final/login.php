@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $password = $_POST['password'];
 
         // Preparar la consulta SQL para evitar inyecciones SQL
-        $stmt = $conexion->prepare("SELECT * FROM usuarios WHERE username = ?");
+        $stmt = $conexion->prepare("SELECT id, username, password FROM usuarios WHERE username = ?");
         $stmt->bind_param("s", $usuario);
         $stmt->execute();
         $resultado = $stmt->get_result();
@@ -21,9 +21,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         if($resultado->num_rows === 1){
              $usuarioDB = $resultado->fetch_assoc();
 
-            // 2. Verificar contraseña correctamente
+            //Verificar contraseña correctamente
             if (password_verify($password, $usuarioDB['password'])) {
 
+                $_SESSION['idCliente'] = $usuarioDB['id'];
                 $_SESSION['usuario'] = $usuarioDB['username'];
                 header("Location: index.php");
                 exit();
@@ -38,23 +39,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         $stmt->close();
     }
-}
-//Registro
-if(isset($_POST['register_usuario']) && isset($_POST['register_password'])){
-    $new_usuario = $_POST['register_usuario'];
-    $new_password = $_POST['register_password'];
-
-    // Preparar la consulta SQL para insertar un nuevo usuario
-    $stmt = $conexion->prepare("INSERT INTO usuarios (usuario, password) VALUES (?, ?)");
-    $stmt->bind_param("ss", $new_usuario, $new_password);
-
-    if($stmt->execute()){
-        $mensaje = 'Usuario registrado exitosamente.';
-    } else {
-        $mensaje = 'Error al registrar el usuario.';
-    }
-
-    $stmt->close();
 }
 ?>
 
@@ -111,10 +95,10 @@ if(isset($_POST['register_usuario']) && isset($_POST['register_password'])){
 
             <!-- Enlaces para cambiar idioma -->
             <div class="idiomas">
-        🌐 
-        <a href="idioma.php?lang=es">Español</a> | 
-        <a href="idioma.php?lang=en">English</a>
-    </div>
+                🌐 
+                <a href="idioma.php?lang=es">Español</a> | 
+                <a href="idioma.php?lang=en">English</a>
+            </div>
         </form>
     </div>
 

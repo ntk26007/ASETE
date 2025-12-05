@@ -49,8 +49,12 @@ class DB {
         if (!empty($filtros['año'])) { $sql .= " AND YEAR(Año_estreno) = ?"; $params[] = $filtros['año']; $types .= "i"; }
 
         $stmt = $this->conexion->prepare($sql);
+        if (!$stmt) {
+            // Manejo de error (log y devolver array vacío)
+            error_log("DB prepare error: " . $this->conexion->error);
+        return [];
+        }
         if (!empty($params)) $stmt->bind_param($types, ...$params);
-
         $stmt->execute();
         $result = $stmt->get_result();
         $peliculas = [];
@@ -109,13 +113,60 @@ class DB {
         return $libros;
     }
 
+    public function getItemPorId($tabla, $id) {
+    if ($tabla === "Peliculas") {
+        $query = "SELECT * FROM Peliculas WHERE ID = ?";
+    } else {
+        $query = "SELECT * FROM Libros WHERE ID = ?";
+    }
+
+    $stmt = $this->conexion->prepare($query);
+    if (!$stmt) return null;
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $res = $stmt->get_result()->fetch_assoc();
+
+    if (!$res) return null;
+
+    if ($tabla === "Peliculas") {
+        $item = new Pelicula(
+            $res['Titulo'],
+            $res['Año_estreno'],
+            $res['Director'],
+            $res['Actores'],
+            $res['Genero']
+        );
+    } else {
+        $item = new Libro(
+            $res['Titulo'],
+            $res['Autor_id'],
+            $res['Genero'],
+            $res['Editorial'],
+            $res['Paginas'],
+            $res['Año'],
+            $res['Precio']
+        );
+    }
+
+    $item->id = $res['ID'];
+    $item->estado = $res['Estado'];
+
+    return $item;
+}
+
     /* ------------------------------------------------------------------------------------
         CAMBIAR ESTADO (Reserva)
     ------------------------------------------------------------------------------------ */
     public function cambiarEstado($tabla, $id, $nuevoEstado) {
-        $sql = "UPDATE $tabla SET Estado=? WHERE ID=?";
+        if ($tabla === "Peliculas") {
+             $sql = "UPDATE Peliculas SET Estado = ? WHERE ID = ?";
+        } else {
+             $sql = "UPDATE Libros SET Estado = ? WHERE ID = ?";
+        }
+
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("si", $nuevoEstado, $id);
-        return $stmt->execute();
+        $stmt->execute();
     }
 }
+?>

@@ -14,24 +14,29 @@ class Utils {
             $coincide = true;
 
             // FILTRO: géneros (si hay array de géneros, comprobamos inclusión)
-            if (!empty($filtros['generos']) && !!in_array($peli->getGenero(), $filtros['generos'])) {
-                $coincide = false;
-            }   
-            if ($coincide && !empty($filtros['año']) && $peli['año'] != $filtros['año']) {
-                $coincide = false;
-            }
-            if ($coincide && !empty($filtros['director']) && stripos($peli['director'], $filtros['director']) === false) {
+            if (!empty($filtros['generos']) && is_array($filtros['generos'])) {
+            // si la película no está en ninguno de los géneros seleccionados -> excluir
+            if (!in_array($peli->genero, $filtros['generos'], true)) {
                 $coincide = false;
             }
-            if ($coincide && !empty($filtros['actor']) && stripos($peli['actores'], $filtros['actor']) === false) {
-                $coincide = false;
-            }
-            if ($coincide) {
-                $resultados[] = $peli;
-            }
+        }
+
+        if ($coincide && !empty($filtros['año'])) {
+            if ((string)$peli->año !== (string)$filtros['año']) $coincide = false;
+        }
+
+        if ($coincide && !empty($filtros['director'])) {
+            if (stripos($peli->director, $filtros['director']) === false) $coincide = false;
+        }
+
+        if ($coincide && !empty($filtros['actor'])) {
+            if (stripos($peli->actores, $filtros['actor']) === false) $coincide = false;
+        }
+
+        if ($coincide) $resultados[] = $peli;
     }
-        return $resultados;
-    }
+    return $resultados;
+}
 
     //Incrementa las visitas al catálogo
     public static function incrementarVisitas(&$contador){

@@ -50,6 +50,19 @@ $lang_data = [
     'reservado' => 'Reservado',
     'reservar' => 'Reservar',
     'devolver' => 'Devolver',
+    'contraseña' => 'Contraseña',
+    'Confirmar Contraseña' => 'Confirmar Contraseña',
+    'registrarse_boton' => 'Registrar',
+    'volver_login' => 'Volver al Login',
+    'Registrar' => 'Registrar',
+    'Registro' => 'Registro',
+    'visitas'=>'📊 Has visitado el catálogo',
+    'mis_reservas' => 'Mis Reservas',
+    'id_libro' => 'ID Libro',
+    'titulo' => 'Título',
+    'fecha_reserva' => 'Fecha de Reserva',
+    'reservas_activas' => 'No tienes reservas activas.',
+    
     
     // --- Mensajes de reservar y devolver ---
     'mensaje_reservar_pelicula' => "📕 Película reservada correctamente.",

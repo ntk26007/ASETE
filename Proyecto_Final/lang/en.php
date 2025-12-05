@@ -48,6 +48,18 @@ $lang_data = [
     'reservado' => 'Reserved',
     'reservar' => 'Reserve',
     'devolver' => 'Return',
+    'contraseña' => 'Password',
+    'Confirmar Contraseña' => 'Confirm Password',
+    'registrarse_boton' => 'Register',
+    'volver_login' => 'Back to Login',
+    'Registrar' => 'Register',
+    'Registro' => 'Registration',
+    'visitas'=>'📊 You have visited the catalog',
+    'mis_reservas' => 'My Reservations',
+    'id_libro' => 'Book ID',
+    'titulo' => 'Title',
+    'fecha_reserva' => 'Reservation Date',
+    'reservas_activas' => 'You have no active reservations.',
     
     // --- Mensajes de reservar y devolver ---
     'mensaje_reservar_pelicula' => "📕 Movie reserved successfully.",

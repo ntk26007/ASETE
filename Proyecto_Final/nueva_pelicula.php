@@ -1,7 +1,7 @@
 <?php
 session_start();
 include 'idioma.php';
-include 'Peliculas.php';
+require_once 'Peliculas.php';
 
 // Protege la página: si no hay usuario logueado, redirige al login
 if (!isset($_SESSION['usuario'])) {
