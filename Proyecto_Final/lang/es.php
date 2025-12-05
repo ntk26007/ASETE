@@ -1,7 +1,7 @@
 <?php
 // Definición de cadenas en español
 $lang_data = [
-    'titulo_catalogo' => '🎬 Catálogo de Películas',
+    'titulo_catalogo' => '🎬 / 📚 Catálogo',
     'nueva_pelicula' => 'Nueva Película',
     'cerrar_sesion' => 'Cerrar Sesión',
     'resultados' => 'Se han encontrado',

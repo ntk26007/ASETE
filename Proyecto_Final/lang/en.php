@@ -1,7 +1,7 @@
 <?php
 // Definición de cadenas en inglés
 $lang_data = [
-    'titulo_catalogo' => '🎬 Movie Catalog',
+    'titulo_catalogo' => '🎬 / 📚 Catalog',
     'nueva_pelicula' => 'New Movie',
     'cerrar_sesion' => 'Log Out',
     'resultados' => 'Found',
