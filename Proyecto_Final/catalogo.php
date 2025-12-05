@@ -51,6 +51,11 @@ if (isset($_SESSION['flash'])) {
     }
     unset($_SESSION['flash']);
 }
+
+// Construir URL para volver con filtros
+$parametros = http_build_query($_GET);
+$volver_url = "catalogo.php?" . $parametros;
+
 ?>
 
 <!DOCTYPE html>

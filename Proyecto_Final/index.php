@@ -56,9 +56,9 @@ $generosPeliculas = $conexion->query("SELECT DISTINCT Genero FROM Peliculas ORDE
 <form action="catalogo.php" method="GET">
 
     <!-- Selección de tipo -->
-    <h2>¿Qué quieres ver?</h2>
-    <label><input type="checkbox" id="chkLibros" name="tipo[]" value="libros" onclick="toggleFiltros()"> Libros</label>
-    <label><input type="checkbox" id="chkPeliculas" name="tipo[]" value="peliculas" onclick="toggleFiltros()"> Películas</label>
+    <h2><?= $lang_data['ver'] ?></h2>
+    <label><input type="checkbox" id="chkLibros" name="tipo[]" value="libros" onclick="toggleFiltros()"> <?= $lang_data['Libros'] ?></label>
+    <label><input type="checkbox" id="chkPeliculas" name="tipo[]" value="peliculas" onclick="toggleFiltros()"> <?= $lang_data['Peliculas'] ?></label>
 
     <!-- ======================
          FILTROS PARA LIBROS

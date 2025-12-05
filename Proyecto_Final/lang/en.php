@@ -60,6 +60,9 @@ $lang_data = [
     'titulo' => 'Title',
     'fecha_reserva' => 'Reservation Date',
     'reservas_activas' => 'You have no active reservations.',
+    'ver' => 'What do you want to see?',
+    'Libros' => 'Books',
+    'Peliculas' => 'Movies',
     
     // --- Mensajes de reservar y devolver ---
     'mensaje_reservar_pelicula' => "📕 Movie reserved successfully.",
