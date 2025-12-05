@@ -316,6 +316,13 @@ tr:hover {
 }
 
 /* ------------------ Login ------------------ */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
 .login-box {
     justify-content: center;
     align-items: center;

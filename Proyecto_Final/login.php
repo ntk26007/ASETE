@@ -60,6 +60,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <canvas id="particles"></canvas>
 
     <!-- Caja principal del login -->
+    <div class="login-container">
     <div class="login-box">
         <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Avatar">
         <h2><?= $lang_data['iniciar_sesion'] ?></h2>
@@ -100,6 +101,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <a href="idioma.php?lang=en">English</a>
             </div>
         </form>
+    </div>
     </div>
 
     <!-- Script de partículas -->

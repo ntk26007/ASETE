@@ -20,19 +20,28 @@ Utils::incrementarVisitas($visitas);
 // Inicializar DB
 $db = new DB($conexion);
 
-// --- Filtros ---
-$filtros = [
-    'titulo' => $_GET['titulo'] ?? '',
-    'genero' => $_GET['genero'] ?? '',
-    'año' => $_GET['año'] ?? '',
+// --- Tipos seleccionados en index.php ---
+$tipos = $_GET['tipo'] ?? [];   // ["libros", "peliculas"]
+
+// --- Filtros según lo seleccionado ---
+$filtrosPeliculas = [
+    'titulo'   => $_GET['titulo_pelicula'] ?? '',
+    'genero'   => $_GET['genero_pelicula'] ?? '',
+    'año'      => $_GET['año'] ?? '',
     'director' => $_GET['director'] ?? '',
-    'actor' => $_GET['actor'] ?? '',
-    'editorial' => $_GET['editorial'] ?? ''
+    'actor'    => $_GET['actor'] ?? ''
 ];
 
-// Datos
-$peliculas = $db->getPeliculas($filtros);
-$libros = $db->getLibros($filtros);
+$filtrosLibros = [
+    'titulo'   => $_GET['titulo_libro'] ?? '',
+    'genero'   => $_GET['genero_libro'] ?? '',
+    'autor'    => $_GET['autor'] ?? '',
+    'editorial'=> $_GET['editorial'] ?? ''
+];
+
+// Datos según filtros
+$peliculas = in_array("peliculas", $tipos) ? $db->getPeliculas($filtrosPeliculas) : [];
+$libros    = in_array("libros", $tipos)    ? $db->getLibros($filtrosLibros)     : [];
 
 // Mensajes flash
 $mensaje = '';
@@ -77,7 +86,10 @@ if (isset($_SESSION['flash'])) {
 
     <div class="catalogo-container">
 
-    <!-- PELÍCULAS -->
+    <!-- ====================
+            PELÍCULAS
+    ===================== -->
+    <?php if (in_array("peliculas", $tipos)): ?>
     <div class="catalogo-col">
         <h2>🎬 <?= $lang_data['peliculas'] ?></h2>
 
@@ -88,19 +100,29 @@ if (isset($_SESSION['flash'])) {
                 <form action="reservar.php" method="POST">
                     <input type="hidden" name="tabla" value="Peliculas">
                     <input type="hidden" name="id_item" value="<?= $p->id ?>">
+
                     <?php if ($p->estado === "Disponible") : ?>
-                        <button class="boton-reservar" type="submit" name="reservar"><?= $lang_data['reservar']; ?></button>
+                        <button class="boton-reservar" type="submit" name="reservar">
+                            <?= $lang_data['reservar']; ?>
+                        </button>
                     <?php else: ?>
-                        <button class="boton-devolver" type="submit" name="devolver"><?= $lang_data['devolver']; ?></button>
+                        <button class="boton-devolver" type="submit" name="devolver">
+                            <?= $lang_data['devolver']; ?>
+                        </button>
                     <?php endif; ?>
                 </form>
             <?php endforeach; ?>
+
         <?php else: ?>
-            <p>❌ <?= $lang_data['no_hay_peliculas'] ?? 'No hay películas.' ?></p>
+            <p>❌ <?= $lang_data['no_hay_peliculas'] ?? 'No hay películas que coincidan con los filtros.' ?></p>
         <?php endif; ?>
     </div>
+    <?php endif; ?>
 
-    <!-- LIBROS -->
+    <!-- ====================
+              LIBROS
+    ===================== -->
+    <?php if (in_array("libros", $tipos)): ?>
     <div class="catalogo-col">
         <h2>📚 <?= $lang_data['libros'] ?></h2>
 
@@ -111,20 +133,30 @@ if (isset($_SESSION['flash'])) {
                 <form action="reservar.php" method="POST">
                     <input type="hidden" name="tabla" value="Libros">
                     <input type="hidden" name="id_item" value="<?= $l->id ?>">
+
                     <?php if ($l->estado === "Disponible") : ?>
-                        <button class="boton-reservar" type="submit" name="reservar"><?= $lang_data['reservar']; ?></button>
+                        <button class="boton-reservar" type="submit" name="reservar">
+                            <?= $lang_data['reservar']; ?>
+                        </button>
                     <?php else: ?>
-                        <button class="boton-devolver" type="submit" name="devolver"><?= $lang_data['devolver']; ?></button>
+                        <button class="boton-devolver" type="submit" name="devolver">
+                            <?= $lang_data['devolver']; ?>
+                        </button>
                     <?php endif; ?>
                 </form>
             <?php endforeach; ?>
+
         <?php else: ?>
-            <p>❌ <?= $lang_data['no_hay_libros'] ?? 'No hay libros.' ?></p>
+            <p>❌ <?= $lang_data['no_hay_libros'] ?? 'No hay libros que coincidan con los filtros.' ?></p>
         <?php endif; ?>
-    </div>
 
     </div>
+    <?php endif; ?>
+
+    </div>
+    <br>
     <p><?= $lang_data['visitas'] ?> <strong><?= $_SESSION['visitas'] ?></strong> veces.</p>
 </div>
+
 </body>
 </html>

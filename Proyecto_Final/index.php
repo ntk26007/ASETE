@@ -3,6 +3,11 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 include 'idioma.php';
 include 'Formatear.php'; // asegúrate del nombre en minúsculas
 include 'Peliculas.php'; // idem
+include 'conexion.php';
+
+// Obtener géneros dinámicos desde la BD
+$generosLibros = $conexion->query("SELECT DISTINCT Genero FROM Libros ORDER BY Genero")->fetch_all(MYSQLI_ASSOC);
+$generosPeliculas = $conexion->query("SELECT DISTINCT Genero FROM Peliculas ORDER BY Genero")->fetch_all(MYSQLI_ASSOC);
 ?>
 
 
@@ -12,6 +17,23 @@ include 'Peliculas.php'; // idem
     <meta charset="UTF-8">
     <title>Filtro de películas</title>
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        .oculto { display: none; }
+    </style>
+
+    <script>
+        function toggleFiltros() {
+            const chkLibros = document.getElementById("chkLibros").checked;
+            const chkPeliculas = document.getElementById("chkPeliculas").checked;
+
+            document.getElementById("filtrosLibros").style.display =
+                chkLibros ? "block" : "none";
+
+            document.getElementById("filtrosPeliculas").style.display =
+                chkPeliculas ? "block" : "none";
+        }
+    </script>
 </head>
 <body>
     <h1><?= $lang_data['titulo_catalogo'] ?></h1>
@@ -28,42 +50,66 @@ include 'Peliculas.php'; // idem
         <a href="idioma.php?lang=es">Español</a> | 
         <a href="idioma.php?lang=en">English</a>
     </div>
-    
-    <!-- Contenedor del formulario de filtros -->
-        <div class="container">
-        <form action="catalogo.php" method="GET">
 
-            <!-- Filtro por géneros -->
-            <label><?= $lang_data['generos'] ?></label>
-            <div class="checkbox-group">
-                <!-- Cada checkbox tiene su valor original y su etiqueta traducida -->
-                <label><input type="checkbox" name="genero[]" value="Drama"><?= $lang_data['drama'] ?></label>
-                <label><input type="checkbox" name="genero[]" value="Ciencia ficción"><?= $lang_data['ciencia'] ?></label>
-                <label><input type="checkbox" name="genero[]" value="Biografía"><?= $lang_data['biografia'] ?></label>
-                <label><input type="checkbox" name="genero[]" value="Romance"><?= $lang_data['romance'] ?></label>
-                <label><input type="checkbox" name="genero[]" value="Fantasía"><?= $lang_data['fantasia'] ?></label>
-                <label><input type="checkbox" name="genero[]" value="Thriller"><?= $lang_data['thriller'] ?></label>
-            </div>
+<div class="container">
 
-            <!-- Filtro por título de película -->
-            <label for="titulo"><?= $lang_data['titulo'] ?></label>
-            <input type="text" name="titulo" id="titulo" placeholder="Ej: Inception">
-        
-            <!-- Filtro por año de estreno -->
-            <label for="año"><?= $lang_data['año'] ?></label>
-            <input type="number" name="año" id="año" placeholder="Ej: 2003">
+<form action="catalogo.php" method="GET">
 
-            <!-- Filtro por director -->
-            <label for="director"><?= $lang_data['director'] ?></label>
-            <input type="text" name="director" id="director" placeholder="Ej: Burton">
+    <!-- Selección de tipo -->
+    <h2>¿Qué quieres ver?</h2>
+    <label><input type="checkbox" id="chkLibros" name="tipo[]" value="libros" onclick="toggleFiltros()"> Libros</label>
+    <label><input type="checkbox" id="chkPeliculas" name="tipo[]" value="peliculas" onclick="toggleFiltros()"> Películas</label>
 
-            <!-- Filtro por actor -->
-            <label for="actor"><?= $lang_data['actor'] ?></label>
-            <input type="text" name="actor" id="actor" placeholder="Ej: Williams">
+    <!-- ======================
+         FILTROS PARA LIBROS
+    ======================= -->
+    <div id="filtrosLibros" class="oculto">
+        <h3>Filtrar Libros</h3>
 
-            <!-- Botón para enviar filtros, texto traducido -->
-            <input type="submit" class="boton" value=<?= $lang_data['filtrar'] ?>>
-        </form>
+        <label>Género</label>
+        <select name="genero_libro">
+            <option value="">Todos</option>
+            <?php foreach ($generosLibros as $g): ?>
+                <option value="<?= $g['Genero'] ?>"><?= $g['Genero'] ?></option>
+            <?php endforeach; ?>
+        </select>
+
+        <label>Título</label>
+        <input type="text" name="titulo_libro">
+
+        <label>Autor</label>
+        <input type="text" name="autor">
+    </div>
+
+    <!-- ======================
+         FILTROS PARA PELÍCULAS
+    ======================= -->
+    <div id="filtrosPeliculas" class="oculto">
+        <h3>Filtrar Películas</h3>
+
+        <label>Género</label>
+        <select name="genero_pelicula">
+            <option value="">Todos</option>
+            <?php foreach ($generosPeliculas as $g): ?>
+                <option value="<?= $g['Genero'] ?>"><?= $g['Genero'] ?></option>
+            <?php endforeach; ?>
+        </select>
+
+        <label>Título</label>
+        <input type="text" name="titulo_pelicula">
+
+        <label>Director</label>
+        <input type="text" name="director">
+
+        <label>Actor</label>
+        <input type="text" name="actor">
+    </div>
+
+    <hr>
+
+    <input type="submit" class="boton" value="<?= $lang_data['filtrar'] ?>">
+
+</form>
     </div>
 </body>
 </html>
