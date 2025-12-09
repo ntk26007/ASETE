@@ -418,4 +418,9 @@ tr:hover {
     color: #FFF176;
 }
 
+/* ------------------ Espaciado entre etiquetas e input ------------------ */
+.campo {
+    margin-bottom: 20px;
+}
+
 

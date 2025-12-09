@@ -168,5 +168,25 @@ class DB {
         $stmt->bind_param("si", $nuevoEstado, $id);
         $stmt->execute();
     }
+
+    /* ------------------------------------------------------------------------------------
+    INSERTAR NUEVA PELÍCULA O LIBRO
+    ------------------------------------------------------------------------------------ */
+public function insertarPelicula($titulo, $año, $director, $actores, $genero) {
+    $sql = "INSERT INTO peliculas (Titulo, Año, Director, Actores, Genero, Estado)
+            VALUES (?, ?, ?, ?, ?, 'Disponible')";
+    $stmt = $this->conexion->prepare($sql);
+    $stmt->bind_param("sisss", $titulo, $año, $director, $actores, $genero);
+    return $stmt->execute();
+}
+
+public function insertarLibro($titulo, $genero, $autor, $editorial) {
+    $sql = "INSERT INTO libros (Titulo, Genero, Autor, Editorial, Estado)
+            VALUES (?, ?, ?, ?, 'Disponible')";
+    $stmt = $this->conexion->prepare($sql);
+    $stmt->bind_param("ssss", $titulo, $genero, $autor, $editorial);
+    return $stmt->execute();
+}
+
 }
 ?>

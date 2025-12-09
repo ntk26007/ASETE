@@ -21,6 +21,8 @@ $stmt = $conexion->prepare($sql);
 $stmt->bind_param("i", $idCliente);
 $stmt->execute();
 $res = $stmt->get_result();
+
+$volver_url = $_SESSION['volver_catalogo'] ?? 'catalogo.php';
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +45,7 @@ $res = $stmt->get_result();
 <div class="container">
 
     <div class="nueva-cerrar-box">
-        <button class="nueva-box" onclick="window.location.href='catalogo.php'"><?= $lang_data["volver"] ?></button>
+        <button class="nueva-box" onclick="window.location.href='<?= $volver_url ?>'"><?= $lang_data["volver"] ?></button>
         <button class="nueva-box" onclick="window.location.href='logout.php'"><?= $lang_data["cerrar_sesion"] ?></button>
     </div>
 

@@ -2,7 +2,7 @@
 // Definición de cadenas en inglés
 $lang_data = [
     'titulo_catalogo' => '🎬 / 📚 Catalog',
-    'nueva_pelicula' => 'New Movie',
+    'añadir' => 'Add New',
     'cerrar_sesion' => 'Log Out',
     'resultados' => 'Found',
     'sin_resultados' => '❌ No movies match the selected filters.',

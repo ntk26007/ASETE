@@ -65,20 +65,31 @@ $generosPeliculas = $conexion->query("SELECT DISTINCT Genero FROM Peliculas ORDE
     ======================= -->
     <div id="filtrosLibros" class="oculto">
         <h3>Filtrar Libros</h3>
-
-        <label>Género</label>
-        <select name="genero_libro">
-            <option value="">Todos</option>
-            <?php foreach ($generosLibros as $g): ?>
-                <option value="<?= $g['Genero'] ?>"><?= $g['Genero'] ?></option>
-            <?php endforeach; ?>
-        </select>
-
-        <label>Título</label>
-        <input type="text" name="titulo_libro">
-
-        <label>Autor</label>
-        <input type="text" name="autor">
+        <br>
+        <div class="campo">
+            <label>Género</label>
+            <select name="genero_libro">
+                <option value="">Todos</option>
+                <?php foreach ($generosLibros as $g): ?>
+                    <option value="<?= $g['Genero'] ?>"><?= $g['Genero'] ?></option>
+                <?php endforeach; ?>
+             </select>
+        </div>
+        <br>
+        <div class="campo">
+            <label>Título</label>
+            <input type="text" name="titulo_libro">
+        </div>
+        <br>
+        <div class="campo">
+            <label>Autor</label>
+            <input type="text" name="autor">
+        </div>
+        <br>
+        <div class="campo">
+            <label>Año</label>
+            <input type="text" name="año">
+        </div>
     </div>
 
     <!-- ======================
@@ -86,23 +97,36 @@ $generosPeliculas = $conexion->query("SELECT DISTINCT Genero FROM Peliculas ORDE
     ======================= -->
     <div id="filtrosPeliculas" class="oculto">
         <h3>Filtrar Películas</h3>
-
-        <label>Género</label>
-        <select name="genero_pelicula">
-            <option value="">Todos</option>
-            <?php foreach ($generosPeliculas as $g): ?>
-                <option value="<?= $g['Genero'] ?>"><?= $g['Genero'] ?></option>
-            <?php endforeach; ?>
-        </select>
-
-        <label>Título</label>
-        <input type="text" name="titulo_pelicula">
-
-        <label>Director</label>
-        <input type="text" name="director">
-
-        <label>Actor</label>
-        <input type="text" name="actor">
+        <br>
+        <div class="campo">
+            <label>Género</label>
+            <select name="genero_pelicula">
+                <option value="">Todos</option>
+                <?php foreach ($generosPeliculas as $g): ?>
+                    <option value="<?= $g['Genero'] ?>"><?= $g['Genero'] ?></option>
+                 <?php endforeach; ?>
+            </select>
+        </div>
+        <br>
+        <div class="campo">
+            <label>Título</label>
+            <input type="text" name="titulo_pelicula">
+        </div>
+        <br>
+        <div class="campo">
+            <label>Director</label>
+            <input type="text" name="director">
+        </div>
+        <br>
+        <div class="campo">
+            <label>Actor</label>
+            <input type="text" name="actor">
+        </div>
+        <br>
+        <div class="campo">
+            <label>Año</label>
+            <input type="text" name="año">
+        </div>
     </div>
 
     <hr>

@@ -2,7 +2,7 @@
 // Definición de cadenas en español
 $lang_data = [
     'titulo_catalogo' => '🎬 / 📚 Catálogo',
-    'nueva_pelicula' => 'Nueva Película',
+    'añadir' => 'Añadir',
     'cerrar_sesion' => 'Cerrar Sesión',
     'resultados' => 'Se han encontrado',
     'sin_resultados' => '❌ No hay películas que cumplan los filtros seleccionados.',

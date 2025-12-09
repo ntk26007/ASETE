@@ -55,6 +55,7 @@ if (isset($_SESSION['flash'])) {
 // Construir URL para volver con filtros
 $parametros = http_build_query($_GET);
 $volver_url = "catalogo.php?" . $parametros;
+$_SESSION['volver_catalogo'] = $volver_url;
 
 ?>
 
@@ -81,7 +82,7 @@ $volver_url = "catalogo.php?" . $parametros;
 
 <div class="container">
     <button class="boton-flecha" onclick="window.location.href='index.php'"></button>
-    <button class="nueva-box" onclick="window.location.href='nueva_pelicula.php'"><?= $lang_data["nueva_pelicula"] ?></button>
+    <button class="nueva-box" onclick="window.location.href='añadir.php'"><?= $lang_data["añadir"] ?></button>
     <button class="nueva-box" onclick="window.location.href='logout.php'"><?= $lang_data["cerrar_sesion"] ?></button>
     <button class="nueva-box" onclick="window.location.href='mis_reservas.php'"><?= $lang_data["mis_reservas"] ?></button>
 </div>
