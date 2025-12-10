@@ -70,25 +70,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } 
     // Libro
     else {
-        $valores['autor'] = trim($_POST['autor'] ?? '');
+        $valores['autor_id']  = trim($_POST['autor_id'] ?? '');
         $valores['editorial'] = trim($_POST['editorial'] ?? '');
+        $valores['paginas']   = trim($_POST['paginas'] ?? '');
+        $valores['año']       = trim($_POST['año'] ?? ''); // formato YYYY-MM-DD o '' 
+        $valores['precio']    = trim($_POST['precio'] ?? '');
 
         if ($valores['titulo'] === '')  $errores[] = 'El título es obligatorio.';
         if ($valores['genero'] === '')  $errores[] = 'El género es obligatorio.';
-        if ($valores['autor'] === '')   $errores[] = 'El autor es obligatorio.';
+        if (empty($valores['autor_id']) || intval($valores['autor_id']) <= 0) $errores[] = 'Debes seleccionar un autor.';
 
+        // Validaciones opcionales
+        if ($valores['paginas'] !== '' && !is_numeric($valores['paginas'])) $errores[] = 'Páginas debe ser un número.';
+        if ($valores['precio'] !== ''  && !is_numeric($valores['precio']))  $errores[] = 'Precio debe ser un número.';
+
+        // Preparar valores para la BD (tipos)
+        $autor_id = intval($valores['autor_id'] ?? 0);
+        $paginas  = ($valores['paginas'] === '') ? 0 : intval($valores['paginas']);
+        $precio   = ($valores['precio'] === '') ? 0 : intval($valores['precio']);
+        $año_raw  = $valores['año']; // '' o 'YYYY-MM-DD'
+
+        // Si no hay errores → insertar
         if (empty($errores)) {
             $db->insertarLibro(
                 $valores['titulo'],
                 $valores['genero'],
-                $valores['autor'],
-                $valores['editorial']
-            );
+                $autor_id,
+                $valores['editorial'],
+                $paginas,
+                $año_raw === '' ? null : $año_raw,
+                $precio
+             );
 
-            $_SESSION['flash'][] = ['type' => 'success', 'text' => "📚 Libro añadido correctamente."];
-            header('Location: catalogo.php?tipo[]=libros');
-            exit();
-        }
+        $_SESSION['flash'][] = ['type' => 'success', 'text' => "📚 Libro añadido correctamente."];
+        header('Location: catalogo.php?tipo[]=libros');
+        exit();
+}
     }
 
     // Si hay errores
@@ -100,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title><?= $lang_data['nueva'] ?></title>
+    <title><?= $lang_data['añadir'] ?></title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -157,15 +174,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- Libro -->
         <div id="campos-libro">
             <label>Autor</label>
-            <input type="text" name="autor" value="<?= htmlspecialchars($valores['autor']) ?>">
+            <?php
+            // Cargar autores para el select
+            $autores = $conexion->query("SELECT ID, NOMBRE FROM Autores ORDER BY NOMBRE");
+            ?>
+            <select name="autor_id">
+                <option value="0">-- Selecciona autor --</option>
+                <?php while($a = $autores->fetch_assoc()): ?>
+                    <option value="<?= $a['ID'] ?>" <?= ($valores['autor_id'] ?? '') == $a['ID'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($a['NOMBRE']) ?>
+                    </option>
+                <?php endwhile; ?>
+            </select>
 
             <label>Editorial</label>
             <input type="text" name="editorial" value="<?= htmlspecialchars($valores['editorial']) ?>">
+
+            <label>Páginas</label>
+            <input type="number" name="paginas" min="0" value="<?= htmlspecialchars($valores['paginas'] ?? '') ?>">
+
+            <label>Año (fecha)</label>
+            <!-- Si prefieres solo año, cambiar a type="number" y en BD usar YEAR -->
+            <input type="date" name="año" value="<?= htmlspecialchars($valores['año'] ?? '') ?>">
+
+            <label>Precio</label>
+            <input type="number" name="precio" min="0" step="1" value="<?= htmlspecialchars($valores['precio'] ?? '') ?>">
         </div>
+
 
         <!-- Género -->
         <label>Género</label>
         <input type="text" name="genero" value="<?= htmlspecialchars($valores['genero']) ?>">
+
+
 
         <input type="submit" value="<?= $lang_data['añadir'] ?>">
     </form>

@@ -172,19 +172,34 @@ class DB {
     /* ------------------------------------------------------------------------------------
     INSERTAR NUEVA PELÍCULA O LIBRO
     ------------------------------------------------------------------------------------ */
-public function insertarPelicula($titulo, $año, $director, $actores, $genero) {
-    $sql = "INSERT INTO peliculas (Titulo, Año, Director, Actores, Genero, Estado)
-            VALUES (?, ?, ?, ?, ?, 'Disponible')";
-    $stmt = $this->conexion->prepare($sql);
-    $stmt->bind_param("sisss", $titulo, $año, $director, $actores, $genero);
-    return $stmt->execute();
-}
+    public function insertarPelicula($titulo, $año, $director, $actores, $genero) {
+        $sql = "INSERT INTO peliculas (Titulo, Año, Director, Actores, Genero, Estado)
+                VALUES (?, ?, ?, ?, ?, 'Disponible')";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("sisss", $titulo, $año, $director, $actores, $genero);
+        return $stmt->execute();
+    }
 
-public function insertarLibro($titulo, $genero, $autor, $editorial) {
-    $sql = "INSERT INTO libros (Titulo, Genero, Autor, Editorial, Estado)
-            VALUES (?, ?, ?, ?, 'Disponible')";
-    $stmt = $this->conexion->prepare($sql);
-    $stmt->bind_param("ssss", $titulo, $genero, $autor, $editorial);
+    public function insertarLibro($titulo, $genero, $autor_id, $editorial, $paginas = 0, $año = null, $precio = 0) {
+
+    if ($año === null || $año === "") {
+        $sql = "INSERT INTO Libros (Titulo, Autor_id, Genero, Editorial, Paginas, Año, Precio, Estado)
+                VALUES (?, ?, ?, ?, ?, NULL, ?, 'Disponible')";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("sissii", $titulo, $autor_id, $genero, $editorial, $paginas, $precio);
+    } else {
+
+        // Convertir año simple → fecha válida
+        if (preg_match('/^\d{4}$/', $año)) {
+            $año = $año . "-01-01";
+        }
+
+        $sql = "INSERT INTO Libros (Titulo, Autor_id, Genero, Editorial, Paginas, Año, Precio, Estado)
+                VALUES (?, ?, ?, ?, ?, ?, ?, 'Disponible')";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("sissisi", $titulo, $autor_id, $genero, $editorial, $paginas, $año, $precio);
+    }
+
     return $stmt->execute();
 }
 
