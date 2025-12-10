@@ -172,36 +172,88 @@ class DB {
     /* ------------------------------------------------------------------------------------
     INSERTAR NUEVA PELÍCULA O LIBRO
     ------------------------------------------------------------------------------------ */
-    public function insertarPelicula($titulo, $año, $director, $actores, $genero) {
-        $sql = "INSERT INTO peliculas (Titulo, Año, Director, Actores, Genero, Estado)
-                VALUES (?, ?, ?, ?, ?, 'Disponible')";
+    public function insertarPelicula($titulo, $año, $director, $actores, $genero, $tipo_adaptacion = 'pelicula') {
+
+        // Si el usuario pone solo "2020" → lo convertimos a "2020-01-01"
+        if (preg_match('/^\d{4}$/', $año)) {
+            $año = $año . "-01-01";
+        }
+
+        // Validar formato completo YYYY-MM-DD
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $año)) {
+            throw new Exception("La fecha debe tener formato YYYY o YYYY-MM-DD.");
+        }
+
+        $sql = "INSERT INTO Peliculas (Titulo, Año_estreno, Director, Actores, Genero, Tipo_adaptacion, Estado)
+                VALUES (?, ?, ?, ?, ?, ?, 'Disponible')";
+
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("sisss", $titulo, $año, $director, $actores, $genero);
+
+        if (!$stmt) {
+            throw new Exception("Error en la preparación de la consulta: " . $this->conexion->error);
+        }
+
+        // Todos son strings → s s s s s s
+        $stmt->bind_param("ssssss",
+            $titulo,
+            $año,
+            $director,
+            $actores,
+            $genero,
+            $tipo_adaptacion
+        );
+
         return $stmt->execute();
     }
 
-    public function insertarLibro($titulo, $genero, $autor_id, $editorial, $paginas = 0, $año = null, $precio = 0) {
+
+    /* ------------------------------------------------------------------------------------
+    INSERTAR NUEVO LIBRO
+    ------------------------------------------------------------------------------------ */
+   public function insertarLibro($titulo, $genero, $autor_id, $editorial, $paginas = 0, $año = null, $precio = 0) {
 
     if ($año === null || $año === "") {
+
         $sql = "INSERT INTO Libros (Titulo, Autor_id, Genero, Editorial, Paginas, Año, Precio, Estado)
                 VALUES (?, ?, ?, ?, ?, NULL, ?, 'Disponible')";
+        
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("sissii", $titulo, $autor_id, $genero, $editorial, $paginas, $precio);
+        $stmt->bind_param("sissii",
+            $titulo,
+            $autor_id,
+            $genero,
+            $editorial,
+            $paginas,
+            $precio
+        );
+
     } else {
 
-        // Convertir año simple → fecha válida
+        // Convertir año de "YYYY" → "YYYY-01-01"
         if (preg_match('/^\d{4}$/', $año)) {
             $año = $año . "-01-01";
         }
 
         $sql = "INSERT INTO Libros (Titulo, Autor_id, Genero, Editorial, Paginas, Año, Precio, Estado)
                 VALUES (?, ?, ?, ?, ?, ?, ?, 'Disponible')";
+        
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("sissisi", $titulo, $autor_id, $genero, $editorial, $paginas, $año, $precio);
+
+        // 🔥 Tipos correctos: s i s s i s i
+        $stmt->bind_param("sissisi",
+            $titulo,
+            $autor_id,
+            $genero,
+            $editorial,
+            $paginas,
+            $año,
+            $precio
+        );
     }
 
     return $stmt->execute();
 }
+
 
 }
 ?>

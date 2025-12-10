@@ -64,12 +64,12 @@ $generosPeliculas = $conexion->query("SELECT DISTINCT Genero FROM Peliculas ORDE
          FILTROS PARA LIBROS
     ======================= -->
     <div id="filtrosLibros" class="oculto">
-        <h3>Filtrar Libros</h3>
+        <h3><?= $lang_data['filtras_libros'] ?> </h3>
         <br>
         <div class="campo">
             <label>Género</label>
             <select name="genero_libro">
-                <option value="">Todos</option>
+                <option value=""><?= $lang_data['todos'] ?> </option>
                 <?php foreach ($generosLibros as $g): ?>
                     <option value="<?= $g['Genero'] ?>"><?= $g['Genero'] ?></option>
                 <?php endforeach; ?>
@@ -77,17 +77,17 @@ $generosPeliculas = $conexion->query("SELECT DISTINCT Genero FROM Peliculas ORDE
         </div>
         <br>
         <div class="campo">
-            <label>Título</label>
+            <label><?= $lang_data['titulo'] ?> </label>
             <input type="text" name="titulo_libro">
         </div>
         <br>
         <div class="campo">
-            <label>Autor</label>
+            <label><?= $lang_data['autor'] ?> </label>
             <input type="text" name="autor">
         </div>
         <br>
         <div class="campo">
-            <label>Año</label>
+            <label><?= $lang_data['año'] ?> </label>
             <input type="text" name="año">
         </div>
     </div>
@@ -96,12 +96,12 @@ $generosPeliculas = $conexion->query("SELECT DISTINCT Genero FROM Peliculas ORDE
          FILTROS PARA PELÍCULAS
     ======================= -->
     <div id="filtrosPeliculas" class="oculto">
-        <h3>Filtrar Películas</h3>
+        <h3><?= $lang_data['filtrar_peliculas'] ?> </h3>
         <br>
         <div class="campo">
             <label>Género</label>
             <select name="genero_pelicula">
-                <option value="">Todos</option>
+                <option value=""><?= $lang_data['todos'] ?> </option>
                 <?php foreach ($generosPeliculas as $g): ?>
                     <option value="<?= $g['Genero'] ?>"><?= $g['Genero'] ?></option>
                  <?php endforeach; ?>
@@ -109,22 +109,22 @@ $generosPeliculas = $conexion->query("SELECT DISTINCT Genero FROM Peliculas ORDE
         </div>
         <br>
         <div class="campo">
-            <label>Título</label>
+            <label><?= $lang_data['titulo'] ?> </label>
             <input type="text" name="titulo_pelicula">
         </div>
         <br>
         <div class="campo">
-            <label>Director</label>
+            <label><?= $lang_data['director'] ?> </label>
             <input type="text" name="director">
         </div>
         <br>
         <div class="campo">
-            <label>Actor</label>
+            <label><?= $lang_data['actor'] ?> </label>
             <input type="text" name="actor">
         </div>
         <br>
         <div class="campo">
-            <label>Año</label>
+            <label><?= $lang_data['año'] ?> </label>
             <input type="text" name="año">
         </div>
     </div>
