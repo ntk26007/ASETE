@@ -84,6 +84,8 @@ $lang_data = [
     'filtrar_libros' => 'Filter Books',
     'filtrar_peliculas' => 'Filter Movies',
     'todos' => 'All',
+    'seleccionar_cliente' => 'Select Client',
+    'selecciona_cliente' => '-- Select a client --',
     
     // --- Mensajes de reservar y devolver ---
     'mensaje_reservar_pelicula' => "📕 Movie reserved successfully.",

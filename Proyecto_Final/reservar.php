@@ -12,12 +12,10 @@ require_once "DB.php";
 
 $db = new DB($conexion);
 
-// Obtener datos del formulario
 $idCliente = (int)$_SESSION['idCliente'];
 $id_item   = (int)($_POST['id_item'] ?? 0);
 $tabla     = $_POST['tabla'] ?? null;
 
-// Validar datos
 if (!$id_item || !$tabla) {
     $_SESSION['flash'][] = ['type' => 'error', 'text' => 'Datos incompletos.'];
     header("Location: catalogo.php");

@@ -106,7 +106,7 @@ $_SESSION['volver_catalogo'] = $volver_url;
                 <form action="reservar.php" method="POST">
                     <input type="hidden" name="tabla" value="Peliculas">
                     <input type="hidden" name="id_item" value="<?= $p->id ?>">
-
+                    <!-- Botones reservar/devolver según estado -->
                     <?php if ($p->estado === "Disponible") : ?>
                         <button class="boton-reservar" type="submit" name="reservar">
                             <?= $lang_data['reservar']; ?>
