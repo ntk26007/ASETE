@@ -41,9 +41,9 @@ class Libro {
         $this->autor = $autor;   
         $this->genero = $genero;
         $this->editorial = $editorial;
-        $this->paginas = (int)$paginas;  
+        $this->paginas = $paginas;  
         $this->año = $año;
-        $this->precio = (int)$precio;    
+        $this->precio = $precio;    
     }
 }
 

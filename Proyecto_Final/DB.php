@@ -123,7 +123,10 @@ class DB {
     if ($tabla === "Peliculas") {
         $query = "SELECT * FROM Peliculas WHERE ID = ?";
     } else {
-        $query = "SELECT * FROM Libros WHERE ID = ?";
+        $query = "SELECT l.*, a.NOMBRE AS AutorNombre
+                  FROM Libros l
+                  LEFT JOIN Autores a ON a.ID = l.Autor_id
+                  WHERE l.ID = ?";
     }
 
     $stmt = $this->conexion->prepare($query);
@@ -146,6 +149,7 @@ class DB {
         $item = new Libro(
             $res['Titulo'],
             $res['Autor_id'],
+            $res['AutorNombre'], // ahora sí existe
             $res['Genero'],
             $res['Editorial'],
             $res['Paginas'],
@@ -159,6 +163,7 @@ class DB {
 
     return $item;
 }
+
 
     /* ------------------------------------------------------------------------------------
         CAMBIAR ESTADO (Reserva)
