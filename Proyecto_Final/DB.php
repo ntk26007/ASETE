@@ -79,16 +79,21 @@ class DB {
         OBTENER LIBROS
     ------------------------------------------------------------------------------------ */
     public function getLibros($filtros = []) {
-        $sql = "SELECT * FROM Libros WHERE 1=1";
+        $sql = "SELECT l.*, a.NOMBRE AS AutorNombre 
+        FROM Libros l 
+        LEFT JOIN Autores a ON a.ID = l.Autor_id 
+        WHERE 1=1";
         $params = [];
         $types = "";
 
-        if (!empty($filtros['titulo'])) { $sql .= " AND Titulo LIKE ?"; $params[] = "%".$filtros['titulo']."%"; $types .= "s"; }
-        if (!empty($filtros['genero'])) { $sql .= " AND Genero LIKE ?"; $params[] = "%".$filtros['genero']."%"; $types .= "s"; }
-        if (!empty($filtros['editorial'])) { $sql .= " AND Editorial LIKE ?"; $params[] = "%".$filtros['editorial']."%"; $types .= "s"; }
-        if (!empty($filtros['año'])) { $sql .= " AND YEAR(Año) = ?"; $params[] = $filtros['año']; $types .= "i"; }
+        if (!empty($filtros['titulo'])) { $sql .= " AND l.Titulo LIKE ?"; $params[] = "%".$filtros['titulo']."%"; $types .= "s"; }
+        if (!empty($filtros['genero'])) { $sql .= " AND l.Genero LIKE ?"; $params[] = "%".$filtros['genero']."%"; $types .= "s"; }
+        if (!empty($filtros['editorial'])) { $sql .= " AND l.Editorial LIKE ?"; $params[] = "%".$filtros['editorial']."%"; $types .= "s"; }
+        if (!empty($filtros['año'])) { $sql .= " AND YEAR(l.Año) = ?"; $params[] = $filtros['año']; $types .= "i"; }
+        if (!empty($filtros['autor'])) { $sql .= " AND a.NOMBRE LIKE ?"; $params[] = "%".$filtros['autor']."%"; $types .= "s"; }
 
         $stmt = $this->conexion->prepare($sql);
+        if (!$stmt) return [];
         if (!empty($params)) $stmt->bind_param($types, ...$params);
 
         $stmt->execute();
@@ -99,6 +104,7 @@ class DB {
             $l = new Libro(
                 $fila['Titulo'],
                 $fila['Autor_id'],
+                $fila['AutorNombre'],
                 $fila['Genero'],
                 $fila['Editorial'],
                 $fila['Paginas'],

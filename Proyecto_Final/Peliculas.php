@@ -9,7 +9,7 @@ class Pelicula {
     public string $director;
     public string $actores;
     public string $genero;
-    public string $estado = "Disponible";  // ← Añadido
+    public string $estado = "Disponible";  
     public int $id;
 
     public function __construct($titulo, $año, $director, $actores, $genero) {
@@ -26,22 +26,25 @@ class Libro {
 
     public string $titulo;
     public int $autor_id;
+    public string $autor;  
     public string $genero;
     public string $editorial;
     public int $paginas;
     public string $año;
     public int $precio;
-    public string $estado = "Disponible"; // ← Añadido
+    public string $estado = "Disponible";
     public int $id;
 
-    public function __construct($titulo, $autor_id, $genero, $editorial, $paginas, $año, $precio) {
+    public function __construct($titulo, $autor_id, $autor, $genero, $editorial, $paginas, $año, $precio) {
         $this->titulo = $titulo;
         $this->autor_id = $autor_id;
+        $this->autor = $autor;   
         $this->genero = $genero;
         $this->editorial = $editorial;
-        $this->paginas = $paginas;
+        $this->paginas = (int)$paginas;  
         $this->año = $año;
-        $this->precio = $precio;
+        $this->precio = (int)$precio;    
     }
 }
+
 ?>

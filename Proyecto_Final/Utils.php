@@ -38,6 +38,53 @@ class Utils {
     return $resultados;
 }
 
+// Filtra libros según formulario
+public static function filtrarLibros($libros, $filtros) {
+    $resultados = [];
+
+    foreach ($libros as $libro) {
+
+        // ignorar elementos que no sean instancia de Libro
+        if (!($libro instanceof Libro)) 
+            continue;
+
+        $coincide = true;
+
+        // Filtro: título
+        if (!empty($filtros['titulo'])) {
+            if (stripos($libro->titulo, $filtros['titulo']) === false) {
+                $coincide = false;
+            }
+        }
+
+        // Filtro: género
+        if ($coincide && !empty($filtros['genero'])) {
+            if (stripos($libro->genero, $filtros['genero']) === false) {
+                $coincide = false;
+            }
+        }
+
+        // Filtro: autor
+        if ($coincide && !empty($filtros['autor'])) {
+            if (stripos($libro->autor, $filtros['autor']) === false) {
+                $coincide = false;
+            }
+        }
+
+        // Filtro: editorial
+        if ($coincide && !empty($filtros['editorial'])) {
+            if (stripos($libro->editorial, $filtros['editorial']) === false) {
+                $coincide = false;
+            }
+        }
+
+        if ($coincide) $resultados[] = $libro;
+    }
+
+    return $resultados;
+}
+
+
     //Incrementa las visitas al catálogo
     public static function incrementarVisitas(&$contador){
         $contador++;
