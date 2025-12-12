@@ -83,6 +83,13 @@ $lang_data = [
     'guardar_libro' => 'Guardar Libro',
     'fecha_estreno' => 'Fecha de Estreno:',
     'tipo_adaptacion' => 'Tipo de Adaptación:',
+    'actores' => 'Actores:',
+    'autor_libro' => 'Autor',
+    'editorial_libro' => 'Editorial',
+    'paginas_libro' => 'Páginas',
+    'filtrar_libros' => 'Filtrar Libros',
+    'filtrar_peliculas' => 'Filtrar Películas',
+    'todos' => 'Todos',
     
     
     // --- Mensajes de reservar y devolver ---

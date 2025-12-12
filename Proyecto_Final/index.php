@@ -64,7 +64,7 @@ $generosPeliculas = $conexion->query("SELECT DISTINCT Genero FROM Peliculas ORDE
          FILTROS PARA LIBROS
     ======================= -->
     <div id="filtrosLibros" class="oculto">
-        <h3><?= $lang_data['filtras_libros'] ?> </h3>
+        <h3><?= $lang_data['filtrar_libros'] ?> </h3>
         <br>
         <div class="campo">
             <label>Género</label>

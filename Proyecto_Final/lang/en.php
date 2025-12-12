@@ -81,7 +81,7 @@ $lang_data = [
     'paginas' => 'Pages:',
     'precio' => 'Price:',
     'autor' => 'Author',
-    'filtras_libros' => 'Filter Books',
+    'filtrar_libros' => 'Filter Books',
     'filtrar_peliculas' => 'Filter Movies',
     'todos' => 'All',
     
