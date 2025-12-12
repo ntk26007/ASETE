@@ -3,13 +3,15 @@ session_start();
 include 'conexion.php';
 include 'idioma.php';
 
-$mensaje = '';
+$mensaje = ''; // Variable para mensajes de error o éxito
 
+// Procesar el formulario de registro
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $usuario = $_POST['usuario'] ?? '';
     $password = $_POST['password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
 
+    // Validar campos
     if($usuario && $password && $confirm_password){
         if($password === $confirm_password){
             $hash = password_hash($password, PASSWORD_DEFAULT);
@@ -43,10 +45,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 <div class="login-box">
     <h2><?= $lang_data['Registro'] ?></h2>
 
+    <!-- Mostrar mensaje si existe -->
     <?php if($mensaje): ?>
         <p class="error"><?= $mensaje ?></p>
     <?php endif; ?>
 
+    <!-- Formulario de registro -->
     <form method="POST">
         <input type="text" name="usuario" placeholder="<?= $lang_data['usuario'] ?>" required>
         <input type="password" name="password" placeholder="<?= $lang_data['contraseña'] ?>" required>

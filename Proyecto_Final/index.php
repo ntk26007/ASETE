@@ -10,7 +10,6 @@ $generosLibros = $conexion->query("SELECT DISTINCT Genero FROM Libros ORDER BY G
 $generosPeliculas = $conexion->query("SELECT DISTINCT Genero FROM Peliculas ORDER BY Genero")->fetch_all(MYSQLI_ASSOC);
 ?>
 
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -22,6 +21,7 @@ $generosPeliculas = $conexion->query("SELECT DISTINCT Genero FROM Peliculas ORDE
         .oculto { display: none; }
     </style>
 
+<!-- Script para mostrar/ocultar filtros según selección -->
     <script>
         function toggleFiltros() {
             const chkLibros = document.getElementById("chkLibros").checked;
@@ -130,7 +130,7 @@ $generosPeliculas = $conexion->query("SELECT DISTINCT Genero FROM Peliculas ORDE
     </div>
 
     <hr>
-
+    <!-- Boton filtrar -->
     <input type="submit" class="boton" value="<?= $lang_data['filtrar'] ?>">
 
 </form>

@@ -119,6 +119,9 @@ class DB {
         return $libros;
     }
 
+    /* ------------------------------------------------------------------------------------
+        OBTENER PELÍCULA O LIBRO POR ID
+        ------------------------------------------------------------------------------------ */
     public function getItemPorId($tabla, $id) {
     if ($tabla === "Peliculas") {
         $query = "SELECT * FROM Peliculas WHERE ID = ?";
@@ -264,7 +267,5 @@ class DB {
 
     return $stmt->execute();
 }
-
-
 }
 ?>

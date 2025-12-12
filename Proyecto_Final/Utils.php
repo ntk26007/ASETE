@@ -21,14 +21,17 @@ class Utils {
             }
         }
 
+        //filtro: título
         if ($coincide && !empty($filtros['año'])) {
             if ((string)$peli->año !== (string)$filtros['año']) $coincide = false;
         }
 
+        //filtro: director
         if ($coincide && !empty($filtros['director'])) {
             if (stripos($peli->director, $filtros['director']) === false) $coincide = false;
         }
 
+        //filtro: actor
         if ($coincide && !empty($filtros['actor'])) {
             if (stripos($peli->actores, $filtros['actor']) === false) $coincide = false;
         }
