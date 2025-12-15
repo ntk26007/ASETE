@@ -12,6 +12,8 @@ trait Formatear {
         $genero_label   = $lang_data['generos']  ?? 'Género';
 
         // Valores comunes
+        //htmlspecialchars = Convierte caracteres especiales HTML en texto seguro
+        //Evita que el navegador interprete código malicioso, protegiendo la aplicación frente a ataques XSS
         $titulo = htmlspecialchars($this->titulo ?? '', ENT_QUOTES, 'UTF-8');
         $año    = htmlspecialchars((string)($this->año ?? ''), ENT_QUOTES, 'UTF-8');
         $genero = htmlspecialchars($this->genero ?? '', ENT_QUOTES, 'UTF-8');

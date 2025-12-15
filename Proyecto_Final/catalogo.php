@@ -43,7 +43,7 @@ $filtrosLibros = [
 $peliculas = in_array("peliculas", $tipos) ? $db->getPeliculas($filtrosPeliculas) : [];
 $libros    = in_array("libros", $tipos)    ? $db->getLibros($filtrosLibros)     : [];
 
-// Mensajes flash
+// Mensajes flash son los que se muestran una sola vez de manera temporal
 $mensaje = '';
 if (isset($_SESSION['flash'])) {
     foreach ($_SESSION['flash'] as $flash) {
@@ -63,6 +63,8 @@ $clientes = $conexion->query("SELECT id, nombre FROM Clientes ORDER BY nombre");
 // Cliente actual (si lo hay en sesión)
 $idClienteActual = $_SESSION['idCliente'] ?? null;
 ?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -110,14 +112,14 @@ $idClienteActual = $_SESSION['idCliente'] ?? null;
         <!-- PELÍCULAS -->
     <?php if (in_array("peliculas", $tipos)): ?>
     <div class="catalogo-col">
-        <h2>🎬 <?= $lang_data['peliculas'] ?></h2>
+        <h2>🎬 <?= $lang_data['peliculas'] ?></h2>  <!-- variable lang data está dentro de carpeta lang -->
         <?php if (count($peliculas) > 0): ?>
             <?php foreach ($peliculas as $p): ?>
                 <?= $p->aHTML($lang_data) ?>
 
                 <?php
                 // Verificar si la película está reservada
-                $stmt = $conexion->prepare("SELECT * FROM Reservas WHERE IdPeliculas = ?");
+                $stmt = $conexion->prepare("SELECT * FROM Reservas WHERE IdPeliculas = ?"); // stmt = statement (guarda la consulta preparada de la bbdd)
                 $stmt->bind_param("i", $p->id);
                 $stmt->execute();
                 $res = $stmt->get_result();
@@ -216,6 +218,7 @@ $idClienteActual = $_SESSION['idCliente'] ?? null;
 </div>
 
 <script>
+    // Modal reservar artículo , crea un desplegable (para seleccionar cliente)
 const modal = document.getElementById("modalCliente");
 const modalId = document.getElementById("modal_id_item");
 const modalTabla = document.getElementById("modal_tabla");

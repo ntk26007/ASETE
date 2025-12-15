@@ -36,7 +36,7 @@ $valores = [
 
 $errores = [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Procesar formulario (envia la peticion al servidor para que la procese)
 
     // Tipo
     $valores['tipo'] = $_POST['tipo'] ?? 'pelicula';
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $valores['actores'] = trim($_POST['actores'] ?? '');
 
         if ($valores['titulo'] === '')  $errores[] = 'El título es obligatorio.';
-        if ($valores['año_pelicula'] === '' || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $valores['año_pelicula']))
+        if ($valores['año_pelicula'] === '' || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $valores['año_pelicula'])) //preg_match = Realiza una búsqueda de una expresión regular
             $errores[] = 'La fecha de estreno debe tener formato YYYY-MM-DD.';
         if ($valores['director'] === '') $errores[] = 'El director es obligatorio.';
         if ($valores['genero'] === '')  $errores[] = 'El género es obligatorio.';
@@ -71,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $valores['tipo_adaptacion']
             );
 
+            // Mensaje de éxito y redirección al catálogo
             $_SESSION['flash'][] = ['type' => 'success', 'text' => "🎬 Película añadida correctamente."];
             header("Location: " . $_SESSION['volver_catalogo']);
             exit();
@@ -87,11 +88,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $valores['paginas']   = trim($_POST['paginas'] ?? '');
         $valores['año_libro'] = trim($_POST['año_libro'] ?? '');
         $valores['precio']    = trim($_POST['precio'] ?? '');
-        $valores['genero']    = trim($_POST['genero'] ?? '');
+        $valores['genero']    = trim($_POST['genero'] ?? ''); //trim = Elimina espacios en blanco u otros caracteres al inicio y al final de una cadena
 
         if ($valores['titulo'] === '')  $errores[] = 'El título es obligatorio.';
         if ($valores['genero'] === '')  $errores[] = 'El género es obligatorio.';
-        if (empty($valores['autor_id']) || intval($valores['autor_id']) <= 0)
+        if (empty($valores['autor_id']) || intval($valores['autor_id']) <= 0) //intval = Obtiene el valor entero de una variable y empty comprueba si una variable está vacía
             $errores[] = 'Debes seleccionar un autor.';
 
         if ($valores['paginas'] !== '' && !is_numeric($valores['paginas']))
@@ -121,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Enviar errores a pantalla
     if (!empty($errores)) {
-        $_SESSION['flash'][] = ['type' => 'error', 'text' => implode("<br>", $errores)];
+        $_SESSION['flash'][] = ['type' => 'error', 'text' => implode("<br>", $errores)]; //implode = Une elementos de un array en una cadena
     }
 }
 ?>

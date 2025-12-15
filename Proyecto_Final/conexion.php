@@ -8,9 +8,8 @@
 
      if($conexion->connect_error)
         echo "Conexión error:" . $conexion->connect_error;
-    /*else   
-        echo "Conectado sin error";
-*/
+
+     
     //Selecionar base de datos
     $conexion->select_db($nombre_de_la_bbdd);
     //establecer codificacion de caracteres

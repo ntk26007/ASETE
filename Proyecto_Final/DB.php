@@ -54,11 +54,13 @@ class DB {
             error_log("DB prepare error: " . $this->conexion->error);
         return [];
         }
+        //bind_param = Vincula variables a una sentencia preparada como parámetros
         if (!empty($params)) $stmt->bind_param($types, ...$params);
         $stmt->execute();
         $result = $stmt->get_result();
         $peliculas = [];
 
+        //fetch_assoc = Obtiene una fila de resultados como un array asociativo
         while ($fila = $result->fetch_assoc()) {
             $p = new Pelicula(
                 $fila["Titulo"],
@@ -96,6 +98,7 @@ class DB {
         if (!$stmt) return [];
         if (!empty($params)) $stmt->bind_param($types, ...$params);
 
+        //execute = Ejecuta una sentencia preparada y get_result = Obtiene un conjunto de resultados de una sentencia preparada
         $stmt->execute();
         $res = $stmt->get_result();
         $libros = [];
@@ -208,6 +211,7 @@ class DB {
         }
 
         // Todos son strings → s s s s s s
+        //bind_param = Vincula variables a una sentencia preparada como parámetros y se pone ssssss porque son 6 strings
         $stmt->bind_param("ssssss",
             $titulo,
             $año,
@@ -232,6 +236,7 @@ class DB {
                 VALUES (?, ?, ?, ?, ?, NULL, ?, 'Disponible')";
         
         $stmt = $this->conexion->prepare($sql);
+        //se pone sissii porque son 6 parametros: string, int, string, string, int, int
         $stmt->bind_param("sissii",
             $titulo,
             $autor_id,
