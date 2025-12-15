@@ -95,6 +95,7 @@ $idClienteActual = $_SESSION['idCliente'] ?? null;
     <a href="idioma.php?lang=en">English</a>
 </div>
 
+
 <div class="container">
     <button class="boton-flecha" onclick="window.location.href='index.php'"></button>
     <button class="nueva-box" onclick="window.location.href='añadir.php'"><?= $lang_data["añadir"] ?></button>
