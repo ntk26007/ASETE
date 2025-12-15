@@ -86,7 +86,7 @@ $lang_data = [
     'todos' => 'All',
     'seleccionar_cliente' => 'Select Client',
     'selecciona_cliente' => '-- Select a client --',
-    
+    'cliente' => 'Client:',
     // --- Mensajes de reservar y devolver ---
     'mensaje_reservar_pelicula' => "📕 Movie reserved successfully.",
     'mensaje_reservar_libro'    => "📕 Book reserved successfully.",

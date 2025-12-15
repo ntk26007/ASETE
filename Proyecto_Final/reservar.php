@@ -1,66 +1,101 @@
 <?php
 session_start();
-
-if (!isset($_SESSION['idCliente'])) {
-    header('Location: login.php');
-    exit();
-}
-
 require_once "conexion.php";
-require_once "Peliculas.php";
 require_once "DB.php";
 
 $db = new DB($conexion);
 
-$idCliente = (int)$_SESSION['idCliente'];
-$id_item   = (int)($_POST['id_item'] ?? 0);
-$tabla     = $_POST['tabla'] ?? null;
+$idItem = (int)($_POST['id_item'] ?? 0);
+$tabla  = $_POST['tabla'] ?? null;
 
-if (!$id_item || !$tabla) {
-    $_SESSION['flash'][] = ['type' => 'error', 'text' => 'Datos incompletos.'];
+// Validar lo mínimo SIEMPRE
+if (!$idItem || !$tabla) {
+    $_SESSION['flash'][] = ['type'=>'error','text'=>'Datos incompletos.'];
     header("Location: catalogo.php");
     exit();
 }
 
-// Obtener item
-$item = $db->getItemPorId($tabla, $id_item);
-if (!$item) {
-    $_SESSION['flash'][] = ['type' => 'error', 'text' => 'Item no encontrado.'];
-    header("Location: catalogo.php");
-    exit();
-}
+// Determinar columna correcta
+$campo = ($tabla === "Libros") ? "IdLibro" : "IdPeliculas";
 
-// RESERVAR
-if (isset($_POST['reservar']) && $item->estado === "Disponible") {
-    $stmt = $conexion->prepare(
-        "INSERT INTO Reservas (IdCliente, IdLibro, Fecha_Reserva) VALUES (?, ?, NOW())"
-    );
-    $stmt->bind_param("ii", $idCliente, $id_item);
-    if ($stmt->execute()) {
-        $db->cambiarEstado($tabla, $id_item, "Reservado");
-        $_SESSION['flash'][] = ['type'=>'success', 'text'=>'✅ Reserva realizada correctamente.'];
+// ¿Está reservado?
+$stmt = $conexion->prepare("SELECT * FROM Reservas WHERE $campo = ?");
+$stmt->bind_param("i", $idItem);
+$stmt->execute();
+$reserva = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+
+/* =======================
+   DEVOLVER (SIN CLIENTE)
+   ======================= */
+if (isset($_POST['devolver'])) {
+
+    if ($reserva) {
+        $stmt = $conexion->prepare("DELETE FROM Reservas WHERE $campo = ?");
+        $stmt->bind_param("i", $idItem);
+        $stmt->execute();
+        $stmt->close();
+
+        $db->cambiarEstado($tabla, $idItem, "Disponible");
+
+        $_SESSION['flash'][] = [
+            'type'=>'info',
+            'text'=>'🔄 Artículo devuelto correctamente.'
+        ];
     } else {
-        $_SESSION['flash'][] = ['type'=>'error', 'text'=>'❌ Error al realizar la reserva.'];
+        $_SESSION['flash'][] = [
+            'type'=>'error',
+            'text'=>'❌ Este artículo no está reservado.'
+        ];
     }
-    $stmt->close();
-}
 
-// DEVOLVER
-if (isset($_POST['devolver']) && $item->estado === "Reservado") {
-    $stmt = $conexion->prepare(
-        "DELETE FROM Reservas WHERE IdCliente = ? AND IdLibro = ?"
-    );
-    $stmt->bind_param("ii", $idCliente, $id_item);
-    if ($stmt->execute()) {
-        $db->cambiarEstado($tabla, $id_item, "Disponible");
-        $_SESSION['flash'][] = ['type'=>'info', 'text'=>'🔄 Artículo devuelto correctamente.'];
+/* =======================
+   RESERVAR (CON CLIENTE)
+   ======================= */
+} else {
+
+    $idCliente = (int)($_POST['idCliente'] ?? 0);
+
+    if (!$idCliente) {
+        $_SESSION['flash'][] = ['type'=>'error','text'=>'Debes seleccionar un cliente.'];
+        header("Location: catalogo.php");
+        exit();
+    }
+
+    if ($reserva) {
+        $_SESSION['flash'][] = [
+            'type'=>'error',
+            'text'=>'❌ Este artículo ya está reservado.'
+        ];
     } else {
-        $_SESSION['flash'][] = ['type'=>'error', 'text'=>'❌ Error al devolver el artículo.'];
+
+        if ($tabla === "Libros") {
+            $stmt = $conexion->prepare(
+                "INSERT INTO Reservas (IdCliente, IdLibro, IdPeliculas, Fecha_Reserva)
+                 VALUES (?, ?, NULL, NOW())"
+            );
+        } else {
+            $stmt = $conexion->prepare(
+                "INSERT INTO Reservas (IdCliente, IdLibro, IdPeliculas, Fecha_Reserva)
+                 VALUES (?, NULL, ?, NOW())"
+            );
+        }
+
+        $stmt->bind_param("ii", $idCliente, $idItem);
+        $stmt->execute();
+        $stmt->close();
+
+        $db->cambiarEstado($tabla, $idItem, "Reservado");
+
+        $_SESSION['flash'][] = [
+            'type'=>'success',
+            'text'=>'✅ Reserva realizada correctamente.'
+        ];
     }
-    $stmt->close();
 }
 
-// Redirigir a Mis Reservas para ver el resultado inmediato
-header("Location: mis_reservas.php");
+// Volver al catálogo con filtros
+$volver = $_SESSION['volver_catalogo'] ?? "catalogo.php";
+header("Location: $volver");
 exit();
 ?>

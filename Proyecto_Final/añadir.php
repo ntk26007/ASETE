@@ -87,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $valores['paginas']   = trim($_POST['paginas'] ?? '');
         $valores['año_libro'] = trim($_POST['año_libro'] ?? '');
         $valores['precio']    = trim($_POST['precio'] ?? '');
+        $valores['genero']    = trim($_POST['genero'] ?? '');
 
         if ($valores['titulo'] === '')  $errores[] = 'El título es obligatorio.';
         if ($valores['genero'] === '')  $errores[] = 'El género es obligatorio.';
@@ -97,6 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errores[] = 'Páginas debe ser un número.';
         if ($valores['precio'] !== '' && !is_numeric($valores['precio']))
             $errores[] = 'Precio debe ser un número.';
+        if ($valores['genero'] === '')  
+            $errores[] = 'El género es obligatorio.';
 
         if (empty($errores)) {
             $db->insertarLibro(
@@ -106,7 +109,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $valores['editorial'],
                 $valores['paginas'] === '' ? 0 : intval($valores['paginas']),
                 $valores['año_libro'] === '' ? null : $valores['año_libro'],
-                $valores['precio'] === '' ? 0 : intval($valores['precio'])
+                $valores['precio'] === '' ? 0 : intval($valores['precio']),
+                $valores['genero']
             );
 
             $_SESSION['flash'][] = ['type' => 'success', 'text' => "📚 Libro añadido correctamente."];
@@ -229,6 +233,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label><?= $lang_data['precio'] ?> </label>
                 <input type="number" name="precio" value="<?= htmlspecialchars($valores['precio']) ?>">
             </div>
+            <br>
+            <div class="campo">
+                <label><?= $lang_data['genero'] ?> </label>
+                <input type="text" name="genero" value="<?= htmlspecialchars($valores['genero']) ?>">
         </div>
 
         <input type="submit" value="<?= $lang_data['añadir'] ?>">
