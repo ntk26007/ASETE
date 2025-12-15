@@ -196,6 +196,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Procesar formulario (envia la pe
                     <option value="cortometraje" <?= ($valores['tipo_adaptacion'] ?? '') == 'cortometraje' ? 'selected' : '' ?>>Cortometraje</option>
                 </select>
             </div>
+            <input type="submit" value="<?= $lang_data['añadir'] ?>">
+            <br>
+            <br>
+         
         </div>
 
         <!-- LIBRO -->
@@ -242,11 +246,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Procesar formulario (envia la pe
 
         <input type="submit" value="<?= $lang_data['añadir'] ?>">
     </form>
-
-    <!-- VOLVER AL CATÁLOGO CON FILTROS RESTAURADOS -->
-    <button class="boton-flecha" onclick="window.location.href='<?= $_SESSION['volver_catalogo'] ?>'"></button>
+    <br>
+    <br>
 </div>
-
+   <!-- VOLVER AL CATÁLOGO CON FILTROS RESTAURADOS -->
+   <button class="boton-flecha" onclick="window.location.href='<?= $_SESSION['volver_catalogo'] ?>'"></button>
 <script>
 function mostrarCampos() {
     const tipo = document.getElementById("tipo-select").value;
