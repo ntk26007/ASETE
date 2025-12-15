@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 if (!isset($_SESSION['idCliente'])) {
     header("Location: login.php");
     exit();
@@ -11,7 +12,6 @@ include "idioma.php";
 
 $idCliente = $_SESSION['idCliente'];
 
-// 🔹 Consulta correcta según tu estructura
 $sql = "
 SELECT 
     r.Fecha_Reserva,

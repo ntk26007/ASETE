@@ -3,12 +3,17 @@ session_start();
 require_once "conexion.php";
 require_once "DB.php";
 
+if (!isset($_SESSION['idCliente'])) {
+    header("Location: login.php");
+    exit();
+}
+
 $db = new DB($conexion);
 
-$idItem = (int)($_POST['id_item'] ?? 0);
-$tabla  = $_POST['tabla'] ?? null;
+$idCliente = (int)$_SESSION['idCliente'];
+$idItem    = (int)($_POST['id_item'] ?? 0);
+$tabla     = $_POST['tabla'] ?? null;
 
-// Validar lo mínimo SIEMPRE
 if (!$idItem || !$tabla) {
     $_SESSION['flash'][] = ['type'=>'error','text'=>'Datos incompletos.'];
     header("Location: catalogo.php");
@@ -18,21 +23,35 @@ if (!$idItem || !$tabla) {
 // Determinar columna correcta
 $campo = ($tabla === "Libros") ? "IdLibro" : "IdPeliculas";
 
-// ¿Está reservado?
-$stmt = $conexion->prepare("SELECT * FROM Reservas WHERE $campo = ?");
-$stmt->bind_param("i", $idItem);
+/* =======================
+   COMPROBAR RESERVA DEL CLIENTE
+   ======================= */
+$stmt = $conexion->prepare(
+    "SELECT * FROM Reservas 
+     WHERE $campo = ? AND IdCliente = ?"
+);
+$stmt->bind_param("ii", $idItem, $idCliente);
 $stmt->execute();
 $reserva = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
 /* =======================
-   DEVOLVER (SIN CLIENTE)
+   DEVOLVER
    ======================= */
 if (isset($_POST['devolver'])) {
 
-    if ($reserva) {
-        $stmt = $conexion->prepare("DELETE FROM Reservas WHERE $campo = ?");
-        $stmt->bind_param("i", $idItem);
+    if (!$reserva) {
+        $_SESSION['flash'][] = [
+            'type'=>'error',
+            'text'=>'❌ No puedes devolver un artículo que no has reservado.'
+        ];
+    } else {
+
+        $stmt = $conexion->prepare(
+            "DELETE FROM Reservas 
+             WHERE $campo = ? AND IdCliente = ?"
+        );
+        $stmt->bind_param("ii", $idItem, $idCliente);
         $stmt->execute();
         $stmt->close();
 
@@ -42,30 +61,17 @@ if (isset($_POST['devolver'])) {
             'type'=>'info',
             'text'=>'🔄 Artículo devuelto correctamente.'
         ];
-    } else {
-        $_SESSION['flash'][] = [
-            'type'=>'error',
-            'text'=>'❌ Este artículo no está reservado.'
-        ];
     }
 
 /* =======================
-   RESERVAR (CON CLIENTE)
+   RESERVAR
    ======================= */
 } else {
-
-    $idCliente = (int)($_POST['idCliente'] ?? 0);
-
-    if (!$idCliente) {
-        $_SESSION['flash'][] = ['type'=>'error','text'=>'Debes seleccionar un cliente.'];
-        header("Location: catalogo.php");
-        exit();
-    }
 
     if ($reserva) {
         $_SESSION['flash'][] = [
             'type'=>'error',
-            'text'=>'❌ Este artículo ya está reservado.'
+            'text'=>'❌ Ya tienes este artículo reservado.'
         ];
     } else {
 
@@ -94,7 +100,7 @@ if (isset($_POST['devolver'])) {
     }
 }
 
-// Volver al catálogo con filtros
+// Volver al catálogo
 $volver = $_SESSION['volver_catalogo'] ?? "catalogo.php";
 header("Location: $volver");
 exit();
